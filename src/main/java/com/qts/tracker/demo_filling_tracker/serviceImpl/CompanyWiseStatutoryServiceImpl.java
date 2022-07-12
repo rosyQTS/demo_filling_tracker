@@ -28,18 +28,31 @@ public class CompanyWiseStatutoryServiceImpl implements CompanyWiseStatutoryServ
 	StatutoryRepository statutoryRepository;
 
 	@Override
-	public CompanyWiseStatutory companyWiseStatutorySaveData(CompanyWiseStatutoryRequest companyWiseStatutoryRequest) {
+	public List<CompanyWiseStatutory> companyWiseStatutorySaveData(CompanyWiseStatutoryRequest companyWiseStatutoryRequest) {
 		// TODO Auto-generated method stub
 		Optional<Company> compOptional = companyRepository.findById(companyWiseStatutoryRequest.getCompanyId());
 		Company company = compOptional.get();
+		List<CompanyWiseStatutory> companyWiseStatutoryList= new ArrayList<CompanyWiseStatutory>();
+		for(int statutoryId : companyWiseStatutoryRequest.getStatutoryId()) {
+//			System.out.println(statutoryId);
+			Optional<Statutory> stOptional = statutoryRepository.findById(statutoryId);
+			Statutory statutory = stOptional.get();
 		
-		List<Statutory> statutoryList = statutoryRepository.findAllById(companyWiseStatutoryRequest.getStatutoryId());
+			//create object of companyWisest via calling the constructor
+			CompanyWiseStatutory companyWiseStatutory=new CompanyWiseStatutory(company, statutory, true);
+			
+			companyWiseStatutoryList.add(companyWiseStatutory);
+			System.out.println(companyWiseStatutoryList.size());
+//			companyWiseStatutoryRepository.save(companyWiseStatutory);
+		}
+		System.out.println("final"+companyWiseStatutoryList.size());
+//		List<Statutory> statutoryList = statutoryRepository.findAllById(companyWiseStatutoryRequest.getStatutoryId());
 //		Statutory statutory = statutoryOptional.get();
 		
-		CompanyWiseStatutory companyWiseStatutory = new CompanyWiseStatutory(company,statutoryList,companyWiseStatutoryRequest.isEnabled());
+//		CompanyWiseStatutory companyWiseStatutory = new CompanyWiseStatutory(company,statutoryList,companyWiseStatutoryRequest.isEnabled());
 
 		
-		return companyWiseStatutoryRepository.save(companyWiseStatutory);
+		return companyWiseStatutoryRepository.saveAll(companyWiseStatutoryList);
 	}
 
 	@Override
@@ -56,5 +69,35 @@ public class CompanyWiseStatutoryServiceImpl implements CompanyWiseStatutoryServ
 		Optional<CompanyWiseStatutory> companyWiseStatutoryDb=this.companyWiseStatutoryRepository.findById(companyWiseStatutoryId);
 		return companyWiseStatutoryDb.get();
 	}
+
+	@Override
+	public List<CompanyWiseStatutory> findAllCompanyWiseStatutory() {
+		// TODO Auto-generated method stub
+		System.out.println("Test in IMPL");
+//		List<CompanyWiseStatutory> companyWiseStatutoryList= companyWiseStatutoryRepository.findAll();
+		System.out.println("Test out IMPL");
+		return companyWiseStatutoryRepository.findAll();
+	}
+
+//	@Override
+//	public List<Statutory> findAllCompanyWiseStatutoryByCompId(int companyId) {
+//		// TODO Auto-generated method stub
+//		List<Statutory> statutory=new ArrayList<Statutory>();
+//		statutory=statutoryRepository.findAllById(companyId);
+//		return statutory;
+//	}
+
+	
+//	public List<ProductVersion> getProductVersionByProductId(int productid) {
+//		// TODO Auto-generated method stub
+//		List<ProductVersion> productVersion = new ArrayList<ProductVersion>();
+//		productVersion=productVersionRepo.findAllByProductId(productid);
+//		return productVersion;
+//	}
+//	// TODO Auto-generated method stub
+//			List<Product> Products = new ArrayList<Product>();
+//			Products=ProductRepo.findAllByBrandId(brandId);
+//			return Products;
+	
 
 }

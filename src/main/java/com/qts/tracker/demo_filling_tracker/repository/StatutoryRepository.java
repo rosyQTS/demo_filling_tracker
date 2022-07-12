@@ -10,6 +10,8 @@ import com.qts.tracker.demo_filling_tracker.model.Statutory;
 @Repository
 public interface StatutoryRepository extends JpaRepository<Statutory, Integer>{
 
+//	List<Statutory> findAllById(int companyId);
+
 
 
 	
