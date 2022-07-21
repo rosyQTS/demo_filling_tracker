@@ -2,6 +2,7 @@ package com.qts.tracker.demo_filling_tracker.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.qts.tracker.demo_filling_tracker.message.ResponceMessage;
+import com.qts.tracker.demo_filling_tracker.model.Company;
 import com.qts.tracker.demo_filling_tracker.model.CompanyAdmin;
 import com.qts.tracker.demo_filling_tracker.model.CompanyWiseStatutory;
+import com.qts.tracker.demo_filling_tracker.model.Statutory;
+import com.qts.tracker.demo_filling_tracker.repository.CompanyRepository;
 import com.qts.tracker.demo_filling_tracker.repository.CompanyWiseStatutoryRepository;
+import com.qts.tracker.demo_filling_tracker.repository.StatutoryRepository;
 import com.qts.tracker.demo_filling_tracker.request.CompanyWiseStatutoryRequest;
 import com.qts.tracker.demo_filling_tracker.service.CompanyWiseStatutoryService;
 
@@ -27,10 +33,14 @@ public class CompanyWiseStatutoryController {
 	CompanyWiseStatutoryRepository companyWiseStatutoryRepository;
 	@Autowired
 	CompanyWiseStatutoryService companyWiseStatutoryService;
+	@Autowired
+	CompanyRepository companyRepository;
+	@Autowired
+	StatutoryRepository statutoryRepository;
 	
 	@CrossOrigin(origins = "*")
 	@PostMapping("/companyWiseStatutorySaveData") 
-	public CompanyWiseStatutory companyWiseStatutorySaveData(@RequestBody CompanyWiseStatutoryRequest companyWiseStatutoryRequest) {
+	public List<CompanyWiseStatutory> companyWiseStatutorySaveData(@RequestBody CompanyWiseStatutoryRequest companyWiseStatutoryRequest) {
 		return companyWiseStatutoryService.companyWiseStatutorySaveData(companyWiseStatutoryRequest);
 	}
 	@CrossOrigin(origins = "*")
@@ -77,6 +87,31 @@ public class CompanyWiseStatutoryController {
 	 public CompanyWiseStatutory getCompanyWiseStatutoryById(@PathVariable("companyWiseStatutoryId") int companyWiseStatutoryId) {
 		 return companyWiseStatutoryService.getCompanyWiseStatutoryById(companyWiseStatutoryId);
 	 }
+//	 @GetMapping("/findAllCompanyWiseStatutoryByCompId/{companyId}")
+//	 public List<Statutory> findAllCompanyWiseStatutoryByCompId(@PathVariable("companyId") int companyId) {
+//		 return companyWiseStatutoryService.findAllCompanyWiseStatutoryByCompId(companyId);
+//	 }
+//	 @PostMapping("/insertCompanyWiseStatutory/{companyId}/Statutory")
+//	  public ResponseEntity<Statutory> createStatutory(@PathVariable(value = "companyId") int companyId,
+//	      @RequestBody Statutory CompanyWiseStatutoryRequest) {
+//		 Statutory statutory = companyRepository.findById(companyId).map(Statutory -> {
+//			 CompanyWiseStatutoryRequest.;
+//	      return companyWiseStatutoryRepository.save(CompanyWiseStatutoryRequest);
+//	    }).orElseThrow(() -> new ResourceNotFoundException("Not found Company with id = " + companyId));
+//
+//	  }
+	 @CrossOrigin(origins = "*")
+	 @GetMapping("/findAllCompanyWiseStatutory")
+	 public Map<Company,List<CompanyWiseStatutory>> findAllCompanyWiseStatutory(){
+//		 System.out.println("Hello One");
+//		 List<CompanyWiseStatutory> obj=new  ArrayList<CompanyWiseStatutory>();
+//		 obj=companyWiseStatutoryService.findAllCompanyWiseStatutory();
+//		 System.out.println("Hello Two");
+		 return companyWiseStatutoryService.findAllCompanyWiseStatutory();
+		 
+	 }
+	 
+	 
 	 
 
 
